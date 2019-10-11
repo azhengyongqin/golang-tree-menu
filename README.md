@@ -25,7 +25,9 @@ type INode interface {
 ```
 
 ## 2 使用
-> go get github.com/azhengyongqin/golang-tree-menu
+```
+go get github.com/azhengyongqin/golang-tree-menu
+```
 
 ### 2.1 定义自己的菜单结构体并且实现接口 `INode`
 ```go
