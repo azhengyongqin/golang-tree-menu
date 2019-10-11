@@ -1,10 +1,10 @@
-package main
+package tree
 
 import (
-	. "./tree"
 	"encoding/json"
 	"fmt"
 	"github.com/tidwall/pretty"
+	"testing"
 )
 
 // 定义我们自己的菜单对象
@@ -50,8 +50,9 @@ func (s SystemMenus) ConvertToINodeArray() (nodes []INode) {
 	return
 }
 
-func main() {
-	// 模拟数据库中所有菜单
+func TestGenerateTree(t *testing.T) {
+	// 模拟获取数据库中所有菜单，在其它所有的查询中，也是首先将数据库中所有数据查询出来放到数组中，
+	// 后面的遍历递归，都在这个 allMenu中进行，而不是在数据库中进行递归查询，减小数据库压力。
 	allMenu := []SystemMenu{
 		{Id: 1, FatherId: 0, Name: "系统总览", Route: "/systemOverview", Icon: "icon-system"},
 		{Id: 2, FatherId: 0, Name: "系统配置", Route: "/systemConfig", Icon: "icon-config"},
@@ -67,7 +68,7 @@ func main() {
 	// 生成完全树
 	resp := GenerateTree(SystemMenus.ConvertToINodeArray(allMenu), nil)
 	bytes, _ := json.MarshalIndent(resp, "", "\t")
-	//fmt.Println(string(bytes))
+	//fmt.Println(string(pretty.Color(pretty.PrettyOptions(bytes, pretty.DefaultOptions), nil)))
 
 	// 模拟选中 '资产' 菜单
 	selectedNode := []SystemMenu{allMenu[2]}
@@ -78,7 +79,7 @@ func main() {
 	// 模拟从数据库中查询出 '设备'
 	device := []SystemMenu{allMenu[5]}
 	// 查询 设备 的所有父节点
-	respNodes := FindFatherNode(SystemMenus.ConvertToINodeArray(device), SystemMenus.ConvertToINodeArray(allMenu))
+	respNodes := FindRelationNode(SystemMenus.ConvertToINodeArray(device), SystemMenus.ConvertToINodeArray(allMenu))
 	resp = GenerateTree(respNodes, nil)
 	bytes, _ = json.Marshal(resp)
 	fmt.Println(string(pretty.Color(pretty.PrettyOptions(bytes, pretty.DefaultOptions), nil)))
