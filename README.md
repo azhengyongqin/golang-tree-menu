@@ -5,7 +5,7 @@
 ### 1.1 GenerateTree(nodes, selectedNodes []INode) (trees []Tree)
 `GenerateTree` 自定义的结构体实现 `INode` 接口后调用此方法生成树结构。
 ### 1.2 FindRelationNode(nodes, allNodes []INode) (respNodes []INode)
-`FindRelationNode` 在 `allTree` 中查询 `nodes` 中节点的所有父子节点 返回 `respNodes`(包含 `nodes` ， 跟其所有父子节点)
+`FindRelationNode` 在 `allNodes` 中查询 `nodes` 中节点的所有父子节点 返回 `respNodes`(包含 `nodes` ， 跟其所有父子节点)
 
 ### 1.3 接口 INode
 ```go
